@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "summaryViewController.h"
 
 @interface AppDelegate ()
 
@@ -19,25 +20,30 @@
     // Override point for customization after application launch.  
 
     UITabBarController *tabBars = [[UITabBarController alloc] init];
-    NSMutableArray *localViewControllersArray = [[NSMutableArray alloc] initWithCapacity:2];
+    NSMutableArray *localViewControllersArray = [[NSMutableArray alloc] initWithCapacity:3];
     
-    
-        //    summaryViewController *summaryVC = [summaryViewController load];
-        //    summaryViewController
-    
-    UIViewController *summaryVC = [[UIViewController alloc] init];
-    summaryVC.view.backgroundColor = UIColor.blueColor;
+    //tab-1
+    summaryViewController *summaryVC = [[summaryViewController alloc] init];
+//    summaryVC.view.backgroundColor = UIColor.blueColor;
     summaryVC.tabBarItem.title = @"Summary";
     
+    //tab-2
     UIViewController *accountsVC = [[UIViewController alloc] init];
     accountsVC.view.backgroundColor = UIColor.redColor;
     accountsVC.tabBarItem.title = @"Accounts";
     
+    //tab-3
+    UIViewController *paymentsVC = [[UIViewController alloc] init];
+    paymentsVC.view.backgroundColor = UIColor.greenColor;
+    paymentsVC.tabBarItem.title = @"Payments";
+    
     summaryVC.tabBarItem.image=[UIImage imageNamed:@"list"];
     accountsVC.tabBarItem.image=[UIImage imageNamed:@"accounts"];
+    paymentsVC.tabBarItem.image=[UIImage imageNamed:@"payments"];
     
     [localViewControllersArray addObject:summaryVC];
     [localViewControllersArray addObject:accountsVC];
+    [localViewControllersArray addObject:paymentsVC];
     
     tabBars.viewControllers = localViewControllersArray;
     tabBars.view.autoresizingMask=(UIViewAutoresizingFlexibleHeight);
@@ -45,6 +51,7 @@
     
     _window.backgroundColor = UIColor.whiteColor;
     [_window makeKeyAndVisible];
+    
     return YES;
 }
 

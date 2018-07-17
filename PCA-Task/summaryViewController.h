@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface summaryViewController : UIViewController
+@interface summaryViewController : UIViewController < UITableViewDelegate, UITableViewDataSource>
+
+@property (strong, nonatomic)UITableView *tableView;
+
 
 @end
