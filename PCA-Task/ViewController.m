@@ -17,8 +17,29 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    //select first tab bar item
+    [self tabBar:self.tabBar didSelectItem:[self.tabBar.items firstObject]];
+    self.tabBar.selectedItem = [self.tabBar.items firstObject];
 }
 
+-(void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
+    
+    switch (item.tag) {
+        case 0:
+            NSLog(@"first item selected!");
+            break;
+        
+        case 1:
+            break;
+        
+        case 2:
+            break;
+            
+        default:
+            break;
+    }
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

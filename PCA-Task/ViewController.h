@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController<UITabBarDelegate>
 
+@property(weak, nonatomic) IBOutlet UITableView *summaryTable;
+@property(weak, nonatomic) IBOutlet UITabBar *tabBar;
 
 @end
 

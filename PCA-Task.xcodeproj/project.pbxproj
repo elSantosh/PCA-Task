@@ -16,6 +16,8 @@
 		20FD7E7820FDEDA100D672DD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 20FD7E7720FDEDA100D672DD /* main.m */; };
 		20FD7E8220FDEDA100D672DD /* PCA_TaskTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 20FD7E8120FDEDA100D672DD /* PCA_TaskTests.m */; };
 		20FD7E8D20FDEDA100D672DD /* PCA_TaskUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 20FD7E8C20FDEDA100D672DD /* PCA_TaskUITests.m */; };
+		20FD7E9C20FDFBFF00D672DD /* summaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20FD7E9B20FDFBFF00D672DD /* summaryViewController.m */; };
+		20FD7E9F20FE018700D672DD /* accountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FD7E9E20FE018700D672DD /* accountsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,10 @@
 		20FD7E8820FDEDA100D672DD /* PCA-TaskUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PCA-TaskUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		20FD7E8C20FDEDA100D672DD /* PCA_TaskUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PCA_TaskUITests.m; sourceTree = "<group>"; };
 		20FD7E8E20FDEDA100D672DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		20FD7E9A20FDFBFF00D672DD /* summaryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = summaryViewController.h; sourceTree = "<group>"; };
+		20FD7E9B20FDFBFF00D672DD /* summaryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = summaryViewController.m; sourceTree = "<group>"; };
+		20FD7E9D20FE018700D672DD /* PCA-Task-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PCA-Task-Bridging-Header.h"; sourceTree = "<group>"; };
+		20FD7E9E20FE018700D672DD /* accountsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = accountsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +111,9 @@
 			children = (
 				20FD7E6520FDEDA000D672DD /* AppDelegate.h */,
 				20FD7E6620FDEDA000D672DD /* AppDelegate.m */,
+				20FD7E9A20FDFBFF00D672DD /* summaryViewController.h */,
+				20FD7E9B20FDFBFF00D672DD /* summaryViewController.m */,
+				20FD7E9E20FE018700D672DD /* accountsViewController.swift */,
 				20FD7E6820FDEDA000D672DD /* ViewController.h */,
 				20FD7E6920FDEDA000D672DD /* ViewController.m */,
 				20FD7E6B20FDEDA000D672DD /* Main.storyboard */,
@@ -113,6 +122,7 @@
 				20FD7E7620FDEDA100D672DD /* Info.plist */,
 				20FD7E7720FDEDA100D672DD /* main.m */,
 				20FD7E6E20FDEDA000D672DD /* PCA_Task.xcdatamodeld */,
+				20FD7E9D20FE018700D672DD /* PCA-Task-Bridging-Header.h */,
 			);
 			path = "PCA-Task";
 			sourceTree = "<group>";
@@ -202,6 +212,7 @@
 				TargetAttributes = {
 					20FD7E6120FDEDA000D672DD = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 0940;
 					};
 					20FD7E7C20FDEDA100D672DD = {
 						CreatedOnToolsVersion = 9.4.1;
@@ -265,7 +276,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20FD7E9C20FDFBFF00D672DD /* summaryViewController.m in Sources */,
 				20FD7E6A20FDEDA000D672DD /* ViewController.m in Sources */,
+				20FD7E9F20FE018700D672DD /* accountsViewController.swift in Sources */,
 				20FD7E7020FDEDA000D672DD /* PCA_Task.xcdatamodeld in Sources */,
 				20FD7E7820FDEDA100D672DD /* main.m in Sources */,
 				20FD7E6720FDEDA000D672DD /* AppDelegate.m in Sources */,
@@ -437,15 +450,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 529UW8C346;
 				INFOPLIST_FILE = "PCA-Task/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.workstreak.PCA-Task";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PCA-Task/PCA-Task-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -454,15 +472,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 529UW8C346;
 				INFOPLIST_FILE = "PCA-Task/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.workstreak.PCA-Task";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PCA-Task/PCA-Task-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -470,6 +492,7 @@
 		20FD7E9520FDEDA100D672DD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 529UW8C346;
@@ -489,6 +512,7 @@
 		20FD7E9620FDEDA100D672DD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 529UW8C346;
@@ -508,6 +532,7 @@
 		20FD7E9820FDEDA100D672DD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 529UW8C346;
 				INFOPLIST_FILE = "PCA-TaskUITests/Info.plist";
@@ -526,6 +551,7 @@
 		20FD7E9920FDEDA100D672DD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 529UW8C346;
 				INFOPLIST_FILE = "PCA-TaskUITests/Info.plist";

@@ -16,7 +16,35 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    // Override point for customization after application launch.  
+
+    UITabBarController *tabBars = [[UITabBarController alloc] init];
+    NSMutableArray *localViewControllersArray = [[NSMutableArray alloc] initWithCapacity:2];
+    
+    
+        //    summaryViewController *summaryVC = [summaryViewController load];
+        //    summaryViewController
+    
+    UIViewController *summaryVC = [[UIViewController alloc] init];
+    summaryVC.view.backgroundColor = UIColor.blueColor;
+    summaryVC.tabBarItem.title = @"Summary";
+    
+    UIViewController *accountsVC = [[UIViewController alloc] init];
+    accountsVC.view.backgroundColor = UIColor.redColor;
+    accountsVC.tabBarItem.title = @"Accounts";
+    
+    summaryVC.tabBarItem.image=[UIImage imageNamed:@"list"];
+    accountsVC.tabBarItem.image=[UIImage imageNamed:@"accounts"];
+    
+    [localViewControllersArray addObject:summaryVC];
+    [localViewControllersArray addObject:accountsVC];
+    
+    tabBars.viewControllers = localViewControllersArray;
+    tabBars.view.autoresizingMask=(UIViewAutoresizingFlexibleHeight);
+    self.window.rootViewController = tabBars;
+    
+    _window.backgroundColor = UIColor.whiteColor;
+    [_window makeKeyAndVisible];
     return YES;
 }
 
