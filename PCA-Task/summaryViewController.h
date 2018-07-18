@@ -13,5 +13,8 @@
 
 @property (strong, nonatomic)UITableView *tableView;
 
+//Initilising API method
+-(NSString *) getDataFrom:(NSString *)url;
+
 
 @end

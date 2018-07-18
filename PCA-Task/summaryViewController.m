@@ -22,6 +22,9 @@
     //navigationbar setup
     self.navigationItem.title = @"Summary";
     
+    
+    [self getDataFrom:@"http://www.mocky.io/v2/5abb1042350000580073a7ea"];
+    
     //Leftbaritem with title, setup
     UIImage* menuimage = [UIImage imageNamed:@"ic_menu_black_24dp"];
     CGRect frameimg = CGRectMake(0, 0, menuimage.size.width, menuimage.size.height);
@@ -39,7 +42,7 @@
     self.navigationItem.leftBarButtonItem=leftButtonItem;
 
    
-    //right bar item setup
+    //rightbaritem setup
     UIImage* lockimage = [UIImage imageNamed:@"padlock"];
     CGRect frameimg2 = CGRectMake(0, 0, lockimage.size.width, lockimage.size.height);
     UIButton *rightButton = [[UIButton alloc] initWithFrame:frameimg2];
@@ -75,7 +78,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-//Mark:- Table View Methods
+//MARK:- Table View Methods
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -161,8 +164,7 @@
     CGRect sepFrame = CGRectMake(0,lbl6Frame.size.height+50,UIScreen.mainScreen.bounds.size.width,5);
     UIView *sepView = [[UIView alloc]initWithFrame:sepFrame];
     sepView.backgroundColor = UIColor.whiteColor;
-    
-    
+   
     //adding subviews to the cell
     [cell addSubview:overlay];
     [cell addSubview:accLBL1];
@@ -173,13 +175,28 @@
     [cell addSubview:accLBL6];
     [cell addSubview:arwImage];
     [cell addSubview:sepView];
-
     
-    
+   
     return cell;
 }
 
 
+- (NSString *) getDataFrom:(NSString *)url{
+    NSURLSession *session = [NSURLSession sharedSession];
+    [[session dataTaskWithURL:[NSURL URLWithString:url]
+            completionHandler:^(NSData *data,
+                                NSURLResponse *response,
+                                NSError *error) {
+            // handle response
+                NSMutableDictionary * innerJson = [NSJSONSerialization
+                                                   JSONObjectWithData:data options:kNilOptions error:&error
+                                                   ];
+                // Call back the block passed into your method
+          
+            }] resume];
+    
+    return nil;
+}
 /*
 #pragma mark - Navigation
 
