@@ -22,10 +22,11 @@
     UITabBarController *tabBars = [[UITabBarController alloc] init];
     NSMutableArray *localViewControllersArray = [[NSMutableArray alloc] initWithCapacity:3];
     
-    //tab-1
+    
+    //tab-1 setup with navigation controller 
     summaryViewController *summaryVC = [[summaryViewController alloc] init];
-//    summaryVC.view.backgroundColor = UIColor.blueColor;
     summaryVC.tabBarItem.title = @"Summary";
+    UINavigationController *summaryNavController = [[UINavigationController alloc]initWithRootViewController:summaryVC];
     
     //tab-2
     UIViewController *accountsVC = [[UIViewController alloc] init];
@@ -41,12 +42,17 @@
     accountsVC.tabBarItem.image=[UIImage imageNamed:@"accounts"];
     paymentsVC.tabBarItem.image=[UIImage imageNamed:@"payments"];
     
-    [localViewControllersArray addObject:summaryVC];
+    [localViewControllersArray addObject:summaryNavController];
     [localViewControllersArray addObject:accountsVC];
     [localViewControllersArray addObject:paymentsVC];
     
     tabBars.viewControllers = localViewControllersArray;
     tabBars.view.autoresizingMask=(UIViewAutoresizingFlexibleHeight);
+    
+//    LoginViewController *loginController = [[UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil] instantiateViewControllerWithIdentifier:@"loginController"]; //or the homeController
+//    UINavigationController *navController = [[UINavigationController alloc]initWithRootViewController:summaryVC];
+//    self.window.rootViewController = navController;
+
     self.window.rootViewController = tabBars;
     
     _window.backgroundColor = UIColor.whiteColor;

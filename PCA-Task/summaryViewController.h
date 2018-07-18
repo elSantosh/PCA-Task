@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "summaryTableViewCell.h"
 
 @interface summaryViewController : UIViewController < UITableViewDelegate, UITableViewDataSource>
 

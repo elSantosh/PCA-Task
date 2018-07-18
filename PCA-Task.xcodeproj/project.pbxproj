@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2083FB8F20FEDECA00A4EAF9 /* summaryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2083FB8E20FEDECA00A4EAF9 /* summaryTableViewCell.m */; };
 		20FD7E6720FDEDA000D672DD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 20FD7E6620FDEDA000D672DD /* AppDelegate.m */; };
 		20FD7E6A20FDEDA000D672DD /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 20FD7E6920FDEDA000D672DD /* ViewController.m */; };
 		20FD7E6D20FDEDA000D672DD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20FD7E6B20FDEDA000D672DD /* Main.storyboard */; };
@@ -38,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2083FB8D20FEDECA00A4EAF9 /* summaryTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = summaryTableViewCell.h; sourceTree = "<group>"; };
+		2083FB8E20FEDECA00A4EAF9 /* summaryTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = summaryTableViewCell.m; sourceTree = "<group>"; };
 		20FD7E6220FDEDA000D672DD /* PCA-Task.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PCA-Task.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		20FD7E6520FDEDA000D672DD /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		20FD7E6620FDEDA000D672DD /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -113,6 +116,8 @@
 				20FD7E6620FDEDA000D672DD /* AppDelegate.m */,
 				20FD7E9A20FDFBFF00D672DD /* summaryViewController.h */,
 				20FD7E9B20FDFBFF00D672DD /* summaryViewController.m */,
+				2083FB8D20FEDECA00A4EAF9 /* summaryTableViewCell.h */,
+				2083FB8E20FEDECA00A4EAF9 /* summaryTableViewCell.m */,
 				20FD7E9E20FE018700D672DD /* accountsViewController.swift */,
 				20FD7E6820FDEDA000D672DD /* ViewController.h */,
 				20FD7E6920FDEDA000D672DD /* ViewController.m */,
@@ -277,6 +282,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				20FD7E9C20FDFBFF00D672DD /* summaryViewController.m in Sources */,
+				2083FB8F20FEDECA00A4EAF9 /* summaryTableViewCell.m in Sources */,
 				20FD7E6A20FDEDA000D672DD /* ViewController.m in Sources */,
 				20FD7E9F20FE018700D672DD /* accountsViewController.swift in Sources */,
 				20FD7E7020FDEDA000D672DD /* PCA_Task.xcdatamodeld in Sources */,
