@@ -69,10 +69,13 @@
     
     //set icons to the tabs
     summaryVC.tabBarItem.image=[UIImage imageNamed:@"list"];
+    [summaryVC.tabBarItem setImageInsets:UIEdgeInsetsMake(3, 3, 3, 3)];
     summaryVC.tabBarItem.title = @"Summary";
     accountsVC.tabBarItem.image=[UIImage imageNamed:@"accounts"];
+    [accountsVC.tabBarItem setImageInsets:UIEdgeInsetsMake(3, 3, 3, 3)];
     accountsVC.tabBarItem.title = @"Accounts";
     paymentsVC.tabBarItem.image=[UIImage imageNamed:@"payments"];
+    [paymentsVC.tabBarItem setImageInsets:UIEdgeInsetsMake(3, 3, 3, 3)];
     paymentsVC.tabBarItem.title = @"Payments";
     
     //bottom tabbars setup
