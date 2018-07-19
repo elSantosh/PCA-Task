@@ -20,39 +20,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    //navigationbar setup
-    self.navigationItem.title = @"Summary";
-    
+    //calling API
     [self getDataFrom:@"http://www.mocky.io/v2/5abb1042350000580073a7ea"];
-    
-    //Leftbaritem with title, setup
-    UIImage* menuimage = [UIImage imageNamed:@"ic_menu_black_24dp"];
-    CGRect frameimg = CGRectMake(0, 0, menuimage.size.width, menuimage.size.height);
-    UIButton *leftButton = [[UIButton alloc] initWithFrame:frameimg];
-    [leftButton setBackgroundImage:menuimage forState:UIControlStateNormal];
-    [leftButton addTarget:self action:@selector(menuAction)
-         forControlEvents:UIControlEventTouchUpInside];
-    [leftButton setShowsTouchWhenHighlighted:YES];
-    UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(40, 2, 50, 20)];
-    [title setText:@"Menu"];
-    [title setTextColor:[UIColor blackColor]];
-    [title setBackgroundColor:[UIColor clearColor]];
-    [leftButton addSubview:title];
-    UIBarButtonItem *leftButtonItem =[[UIBarButtonItem alloc] initWithCustomView:leftButton];
-    self.navigationItem.leftBarButtonItem=leftButtonItem;
 
-   
-    //rightbaritem setup
-    UIImage* lockimage = [UIImage imageNamed:@"padlock"];
-    CGRect frameimg2 = CGRectMake(0, 0, lockimage.size.width, lockimage.size.height);
-    UIButton *rightButton = [[UIButton alloc] initWithFrame:frameimg2];
-    [rightButton setBackgroundImage:lockimage forState:UIControlStateNormal];
-    [rightButton addTarget:self action:@selector(lockAction)
-         forControlEvents:UIControlEventTouchUpInside];
-    [rightButton setShowsTouchWhenHighlighted:YES];
-    UIBarButtonItem *rightButtonItem =[[UIBarButtonItem alloc] initWithCustomView:rightButton];
-    self.navigationItem.rightBarButtonItem =rightButtonItem;
-  
     //tableView setup
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     self.tableView.delegate = self;
@@ -63,17 +33,6 @@
     
     //initialise result array
     self.resultArray = [[NSMutableArray alloc]init];
-}
-
-    //MARK: menu action
--(void)menuAction{
-    //nothing to perform
-}
-
-    //MARK:lock action
--(void)lockAction
-{
-    //nothing to perform
 }
 
 - (void)didReceiveMemoryWarning {
@@ -101,10 +60,10 @@
 {
     //setup cell
     static NSString *cellIdentifier = @"cellIdentifier";
-    summaryTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
     if(cell == nil) {
-        cell = [[summaryTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     
     //background image & selection style setup
@@ -171,15 +130,10 @@
     //Assigning remote data
     
     if (resultArray.count >0) {
-  
-        
         accLBL1.text = [NSString stringWithFormat:@"%@",[[resultArray objectAtIndex:indexPath.row] objectForKey:@"accountLabel"]];
         accLBL2.text = [NSString stringWithFormat:@"%@",[[resultArray objectAtIndex:indexPath.row] objectForKey:@"accountNumber"]];
-        NSString *string1 = [[NSString alloc]init];
-        string1 =  [NSString stringWithFormat:@"%@",[[resultArray objectAtIndex:indexPath.row] objectForKey:@"availableBalance"]];
-        NSLog(@"dollars :%@",[string1 numberValue]);
-        accLBL3.text = [NSString stringWithFormat:@"%@",[string1 numberValue]];
-        accLBL4.text = [NSString stringWithFormat:@"%@",[[resultArray objectAtIndex:indexPath.row] objectForKey:@"currentBalance"]];
+        accLBL3.text = [self formatToDollars:[NSString stringWithFormat:@"%@",[[resultArray objectAtIndex:indexPath.row] objectForKey:@"availableBalance"]]];
+        accLBL4.text = [self formatToDollars:[NSString stringWithFormat:@"%@",[[resultArray objectAtIndex:indexPath.row] objectForKey:@"currentBalance"]]];
     }
    
     //adding subviews to the cell
@@ -194,6 +148,14 @@
     [cell addSubview:sepView];
    
     return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
+   
+    NSArray *controllers = self.navigationController.viewControllers;
+    UIViewController *vc2 = controllers[0]; // If your viewControllers doesn't look like 1>2>3>4>5 here you may get an error.
+    [self.navigationController popToViewController:vc2 animated:YES];
+
 }
 
 - (void)getDataFrom:(NSString *)urlString{
@@ -215,7 +177,22 @@
     }];
     [data resume];
 }
-
+-(NSString *)formatToDollars:(NSString *)centsString{
+    //formatting cent to dollars
+    int cents = [centsString integerValue] % 100;
+    int dollars = (int) ([centsString integerValue] - cents) / 100;
+    NSString *camount;
+    if (cents <=9)
+    {
+        camount = [NSString stringWithFormat:@"0%d",cents];
+    }
+    else
+    {
+        camount = [NSString stringWithFormat:@"%d",cents];
+    }
+    NSString *dollarsString = [NSString stringWithFormat:@"$%d.%@",dollars,camount];
+    return dollarsString;
+}
 /*
 #pragma mark - Navigation
 

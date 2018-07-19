@@ -18,5 +18,6 @@
 
 //API method
 -(void) getDataFrom:(NSString *)url;
+-(NSString *)formatToDollars:(NSString *)centsString;
 
 @end

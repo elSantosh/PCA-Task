@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "summaryViewController.h"
+#import "PCA_Task-Swift.h"
 
 @interface AppDelegate ()
 
@@ -17,50 +18,90 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.  
-
-    UITabBarController *tabBars = [[UITabBarController alloc] init];
-    NSMutableArray *localViewControllersArray = [[NSMutableArray alloc] initWithCapacity:3];
+    // Override point for customization after application launch.
+    
+    //Leftbaritem with title, setup
+    UIImage* menuimage = [UIImage imageNamed:@"ic_menu_black_24dp"];
+    CGRect frameimg = CGRectMake(0, 0, menuimage.size.width, menuimage.size.height);
+    UIButton *leftButton = [[UIButton alloc] initWithFrame:frameimg];
+    [leftButton setBackgroundImage:menuimage forState:UIControlStateNormal];
+    [leftButton addTarget:self action:@selector(menuAction)
+         forControlEvents:UIControlEventTouchUpInside];
+    [leftButton setShowsTouchWhenHighlighted:YES];
+    UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(40, 2, 50, 20)];
+    [title setText:@"Menu"];
+    [title setTextColor:[UIColor blackColor]];
+    [title setBackgroundColor:[UIColor clearColor]];
+    [leftButton addSubview:title];
+    UIBarButtonItem *leftButtonItem =[[UIBarButtonItem alloc] initWithCustomView:leftButton];
     
     
-    //tab-1 setup with navigation controller 
+    //rightbaritem setup
+    UIImage* lockimage = [UIImage imageNamed:@"padlock"];
+    CGRect frameimg2 = CGRectMake(0, 0, lockimage.size.width, lockimage.size.height);
+    UIButton *rightButton = [[UIButton alloc] initWithFrame:frameimg2];
+    [rightButton setBackgroundImage:lockimage forState:UIControlStateNormal];
+    [rightButton addTarget:self action:@selector(lockAction)
+          forControlEvents:UIControlEventTouchUpInside];
+    [rightButton setShowsTouchWhenHighlighted:YES];
+    UIBarButtonItem *rightButtonItem =[[UIBarButtonItem alloc] initWithCustomView:rightButton];
+    
+    //tab-1 setup with navigation controller
     summaryViewController *summaryVC = [[summaryViewController alloc] init];
-    summaryVC.tabBarItem.title = @"Summary";
     UINavigationController *summaryNavController = [[UINavigationController alloc]initWithRootViewController:summaryVC];
+    summaryVC.navigationItem.title = @"Summary";
+    summaryVC.navigationItem.leftBarButtonItem=leftButtonItem;
+    summaryVC.navigationItem.rightBarButtonItem =rightButtonItem;
     
-    //tab-2
-    UIViewController *accountsVC = [[UIViewController alloc] init];
-    accountsVC.view.backgroundColor = UIColor.redColor;
-    accountsVC.tabBarItem.title = @"Accounts";
+    //tab-2 with navigation controller
+    accountsViewController *accountsVC = [[accountsViewController alloc] init];
+    UINavigationController *accountsNavController = [[UINavigationController alloc]initWithRootViewController:accountsVC];
+    accountsVC.navigationItem.title = @"Accounts";
+    accountsVC.navigationItem.leftBarButtonItem=leftButtonItem;
+    accountsVC.navigationItem.rightBarButtonItem =rightButtonItem;
     
-    //tab-3
+    //tab-3 with navigation controller
     UIViewController *paymentsVC = [[UIViewController alloc] init];
-    paymentsVC.view.backgroundColor = UIColor.greenColor;
+    UINavigationController *paymentsNavController = [[UINavigationController alloc]initWithRootViewController:paymentsVC];
+    paymentsVC.navigationItem.title = @"Payments";
+    paymentsVC.navigationItem.leftBarButtonItem=leftButtonItem;
+    paymentsVC.navigationItem.rightBarButtonItem =rightButtonItem;
+    
+    //set icons to the tabs
+    summaryVC.tabBarItem.image=[UIImage imageNamed:@"list"];
+    summaryVC.tabBarItem.title = @"Summary";
+    accountsVC.tabBarItem.image=[UIImage imageNamed:@"accounts"];
+    accountsVC.tabBarItem.title = @"Accounts";
+    paymentsVC.tabBarItem.image=[UIImage imageNamed:@"payments"];
     paymentsVC.tabBarItem.title = @"Payments";
     
-    summaryVC.tabBarItem.image=[UIImage imageNamed:@"list"];
-    accountsVC.tabBarItem.image=[UIImage imageNamed:@"accounts"];
-    paymentsVC.tabBarItem.image=[UIImage imageNamed:@"payments"];
-    
-    [localViewControllersArray addObject:summaryNavController];
-    [localViewControllersArray addObject:accountsVC];
-    [localViewControllersArray addObject:paymentsVC];
-    
-    tabBars.viewControllers = localViewControllersArray;
+    //bottom tabbars setup
+    UITabBarController *tabBars = [[UITabBarController alloc] init];
+    NSMutableArray *tabsViewControllersArray = [[NSMutableArray alloc] initWithCapacity:3];
+    [tabsViewControllersArray addObject:summaryNavController];
+    [tabsViewControllersArray addObject:accountsNavController];
+    [tabsViewControllersArray addObject:paymentsNavController];
+    tabBars.viewControllers = tabsViewControllersArray;
     tabBars.view.autoresizingMask=(UIViewAutoresizingFlexibleHeight);
     
-//    LoginViewController *loginController = [[UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil] instantiateViewControllerWithIdentifier:@"loginController"]; //or the homeController
-//    UINavigationController *navController = [[UINavigationController alloc]initWithRootViewController:summaryVC];
-//    self.window.rootViewController = navController;
-
+    //handle main app window
     self.window.rootViewController = tabBars;
-    
-    _window.backgroundColor = UIColor.whiteColor;
-    [_window makeKeyAndVisible];
+    self.window.backgroundColor = UIColor.whiteColor;
+    [self.window makeKeyAndVisible];
     
     return YES;
 }
 
+//MARK: menu action
+-(void)menuAction{
+    //nothing to perform
+}
+
+//MARK:lock action
+-(void)lockAction
+{
+    //nothing to perform
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

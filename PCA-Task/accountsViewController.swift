@@ -8,18 +8,45 @@
 
 import UIKit
 
-class accountsViewController: UIViewController {
+class accountsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    
+    
+    //table view protocol methods setup
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1;
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "accCell")
+        cell.textLabel!.text = "foo"
+        return cell
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
+        //tableview setup
+        let tableView: UITableView = UITableView()
+        tableView.frame = self.view.bounds
+        tableView.dataSource = self
+        tableView.delegate = self
+        self.view.addSubview(tableView)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     
 
     /*
@@ -31,21 +58,11 @@ class accountsViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
 
 }
 
-extension Formatter {
-    static let withSeparator: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.groupingSeparator = "."
-        formatter.numberStyle = .decimal
-        return formatter
-    }()
-}
 
-extension BinaryInteger {
-    var formattedWithSeparator: String {
-        return Formatter.withSeparator.string(for: self) ?? ""
-    }
-}
+
+
 
