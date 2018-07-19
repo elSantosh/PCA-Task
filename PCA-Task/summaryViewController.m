@@ -13,7 +13,8 @@
 @end
 
 @implementation summaryViewController
-@synthesize tableView;
+@synthesize tableView, resultArray;
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -21,7 +22,6 @@
     
     //navigationbar setup
     self.navigationItem.title = @"Summary";
-    
     
     [self getDataFrom:@"http://www.mocky.io/v2/5abb1042350000580073a7ea"];
     
@@ -60,6 +60,9 @@
     
     //add subviews to main view
     [self.view addSubview:self.tableView];
+    
+    //initialise result array
+    self.resultArray = [[NSMutableArray alloc]init];
 }
 
     //MARK: menu action
@@ -91,7 +94,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    return resultArray.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -121,7 +124,7 @@
     UILabel *accLBL1 = [[UILabel alloc]initWithFrame:lbl1Frame];
     [accLBL1 setFont:[UIFont systemFontOfSize:18]];
     accLBL1.textColor = UIColor.whiteColor;
-    accLBL1.text = @"On Call Savings";
+//    accLBL1.text = @"On Call Savings";
     
     CGRect lbl2Frame = CGRectMake(15, 40, 350.00, 100.00);
     UILabel *accLBL2 = [[UILabel alloc]initWithFrame:lbl2Frame];
@@ -164,6 +167,20 @@
     CGRect sepFrame = CGRectMake(0,lbl6Frame.size.height+50,UIScreen.mainScreen.bounds.size.width,5);
     UIView *sepView = [[UIView alloc]initWithFrame:sepFrame];
     sepView.backgroundColor = UIColor.whiteColor;
+    
+    //Assigning remote data
+    
+    if (resultArray.count >0) {
+  
+        
+        accLBL1.text = [NSString stringWithFormat:@"%@",[[resultArray objectAtIndex:indexPath.row] objectForKey:@"accountLabel"]];
+        accLBL2.text = [NSString stringWithFormat:@"%@",[[resultArray objectAtIndex:indexPath.row] objectForKey:@"accountNumber"]];
+        NSString *string1 = [[NSString alloc]init];
+        string1 =  [NSString stringWithFormat:@"%@",[[resultArray objectAtIndex:indexPath.row] objectForKey:@"availableBalance"]];
+        NSLog(@"dollars :%@",[string1 numberValue]);
+        accLBL3.text = [NSString stringWithFormat:@"%@",[string1 numberValue]];
+        accLBL4.text = [NSString stringWithFormat:@"%@",[[resultArray objectAtIndex:indexPath.row] objectForKey:@"currentBalance"]];
+    }
    
     //adding subviews to the cell
     [cell addSubview:overlay];
@@ -175,28 +192,30 @@
     [cell addSubview:accLBL6];
     [cell addSubview:arwImage];
     [cell addSubview:sepView];
-    
    
     return cell;
 }
 
-
-- (NSString *) getDataFrom:(NSString *)url{
+- (void)getDataFrom:(NSString *)urlString{
+    NSURL *url = [NSURL URLWithString:urlString];
     NSURLSession *session = [NSURLSession sharedSession];
-    [[session dataTaskWithURL:[NSURL URLWithString:url]
-            completionHandler:^(NSData *data,
-                                NSURLResponse *response,
-                                NSError *error) {
-            // handle response
-                NSMutableDictionary * innerJson = [NSJSONSerialization
-                                                   JSONObjectWithData:data options:kNilOptions error:&error
-                                                   ];
-                // Call back the block passed into your method
-          
-            }] resume];
-    
-    return nil;
+    NSURLSessionDataTask *data = [session dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSError *erro = nil;
+        if (data!=nil) {
+            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&erro ];
+            if (json.count > 0) {
+                for(int i = 0; i <= (json.count+1)  ; i++){
+                    [self.resultArray addObject:[json[@"accounts"] objectAtIndex:i]];
+                }
+            }
+        }
+        dispatch_sync(dispatch_get_main_queue(),^{
+            [self.tableView reloadData];
+        });
+    }];
+    [data resume];
 }
+
 /*
 #pragma mark - Navigation
 

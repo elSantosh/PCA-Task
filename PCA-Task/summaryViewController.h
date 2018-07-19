@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "summaryTableViewCell.h"
+#import "PCA_Task-Swift.h"
+
 
 @interface summaryViewController : UIViewController < UITableViewDelegate, UITableViewDataSource>
 
 @property (strong, nonatomic)UITableView *tableView;
+@property (strong, nonatomic)NSMutableArray *resultArray;
 
-//Initilising API method
--(NSString *) getDataFrom:(NSString *)url;
-
+//API method
+-(void) getDataFrom:(NSString *)url;
 
 @end
