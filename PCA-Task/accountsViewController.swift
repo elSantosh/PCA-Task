@@ -33,7 +33,7 @@ class accountsViewController: UIViewController, UITableViewDelegate, UITableView
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        
+        navigationItem.hidesBackButton = true
         //tableview setup
         let tableView: UITableView = UITableView()
         tableView.frame = self.view.bounds

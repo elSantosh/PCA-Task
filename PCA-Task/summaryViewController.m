@@ -151,11 +151,7 @@
 }
 
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
-   
-    NSArray *controllers = self.navigationController.viewControllers;
-    UIViewController *vc2 = controllers[0]; // If your viewControllers doesn't look like 1>2>3>4>5 here you may get an error.
-    [self.navigationController popToViewController:vc2 animated:YES];
-
+   [self.tabBarController setSelectedIndex:1];
 }
 
 - (void)getDataFrom:(NSString *)urlString{
