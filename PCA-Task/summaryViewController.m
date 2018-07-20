@@ -7,6 +7,7 @@
 //
 
 #import "summaryViewController.h"
+#import "PCA_Task-Swift.h"
 
 @interface summaryViewController ()
 
@@ -33,6 +34,11 @@
     
     //initialise result array
     self.resultArray = [[NSMutableArray alloc]init];
+}
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:YES];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -66,13 +72,21 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     
-    //background image & selection style setup
+    //selection style setup
+    cell.selectionStyle=UITableViewCellSelectionStyleNone;
+    //background image setup
+    NSArray *randomImgArray = [[NSArray alloc]initWithObjects:@"sampleAccountImage01", @"sampleAccountImage02", @"sampleAccountImage03", @"sampleAccountImage04",@"sampleAccountImage05",nil];
+    uint32_t randomIndex  = arc4random_uniform([randomImgArray count]);
+    NSString  *ranImgStrg= randomImgArray[randomIndex];
+    
     UIImageView *cellBackView=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, 150)];
     cellBackView.backgroundColor=[UIColor clearColor];
-    cellBackView.image = [UIImage imageNamed:@"sampleAccountImage01"];
+    UIImage *actualImage = [UIImage imageNamed:ranImgStrg];
+    cellBackView.image = [UIImage imageWithCGImage:[actualImage CGImage]
+                                             scale:[actualImage scale]
+                                       orientation: UIImageOrientationDown];
     cell.backgroundView = cellBackView;
-    cell.selectionStyle=UITableViewCellSelectionStyleNone;
-
+    
     //overlay setup
     CGRect overlayFrame = CGRectMake(0, 50, UIScreen.mainScreen.bounds.size.width,100.00);
     UIView *overlay = [[UIView alloc]initWithFrame:overlayFrame];
@@ -83,7 +97,7 @@
     UILabel *accLBL1 = [[UILabel alloc]initWithFrame:lbl1Frame];
     [accLBL1 setFont:[UIFont systemFontOfSize:18]];
     accLBL1.textColor = UIColor.whiteColor;
-//    accLBL1.text = @"On Call Savings";
+    accLBL1.text = @"On Call Savings";
     
     CGRect lbl2Frame = CGRectMake(15, 40, 350.00, 100.00);
     UILabel *accLBL2 = [[UILabel alloc]initWithFrame:lbl2Frame];
@@ -122,6 +136,14 @@
     [arwImage setImage:[UIImage imageNamed:@"TopRot_arrowRight"]];
     arwImage.tintColor = UIColor.whiteColor;
     
+    UIImage *newImage = [arwImage.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIGraphicsBeginImageContextWithOptions(arwImage.image.size, NO, newImage.scale);
+    [UIColor.whiteColor set];
+    [newImage drawInRect:CGRectMake(0, 0, arwImage.image.size.width, newImage.size.height)];
+    newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    arwImage.image = newImage;
+    
     //setup separator between rows
     CGRect sepFrame = CGRectMake(0,lbl6Frame.size.height+50,UIScreen.mainScreen.bounds.size.width,5);
     UIView *sepView = [[UIView alloc]initWithFrame:sepFrame];
@@ -151,7 +173,18 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
-   [self.tabBarController setSelectedIndex:1];
+   
+    //passing data by user defaults
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    //set head data
+    [defaults setValue:[[resultArray objectAtIndex:indexPath.row] objectForKey:@"accountLabel"] forKey:@"accName"];
+    [defaults setValue:[[resultArray objectAtIndex:indexPath.row] objectForKey:@"accountNumber"] forKey:@"accNum"];
+    [defaults setValue:[self formatToDollars:[NSString stringWithFormat:@"%@",[[resultArray objectAtIndex:indexPath.row] objectForKey:@"availableBalance"]]] forKey:@"accAmount"];
+    //set body data
+    [defaults setValue:[resultArray objectAtIndex:indexPath.row] forKey:@"summaryArrayData"];
+    [defaults synchronize];
+    
+    [self.tabBarController setSelectedIndex:1];
 }
 
 - (void)getDataFrom:(NSString *)urlString{
@@ -164,6 +197,18 @@
             if (json.count > 0) {
                 for(int i = 0; i <= (json.count+1)  ; i++){
                     [self.resultArray addObject:[json[@"accounts"] objectAtIndex:i]];
+                    
+                    //passing data by user defaults
+                    //also: data setup for accounts tab
+                    
+                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                    //set head data
+                    [defaults setValue:[[self.resultArray objectAtIndex:0] objectForKey:@"accountLabel"] forKey:@"accName"];
+                    [defaults setValue:[[self.resultArray objectAtIndex:0] objectForKey:@"accountNumber"] forKey:@"accNum"];
+                    [defaults setValue:[self formatToDollars:[NSString stringWithFormat:@"%@",[[self.resultArray objectAtIndex:0] objectForKey:@"availableBalance"]]] forKey:@"accAmount"];
+                    //set body data
+                    [defaults setValue:[self.resultArray objectAtIndex:0] forKey:@"summaryArrayData"];
+                    [defaults synchronize];
                 }
             }
         }

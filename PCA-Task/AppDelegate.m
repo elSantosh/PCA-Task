@@ -30,10 +30,11 @@
     [leftButton setShowsTouchWhenHighlighted:YES];
     UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(40, 2, 50, 20)];
     [title setText:@"Menu"];
-    [title setTextColor:[UIColor blackColor]];
+//    [title setTextColor:[UIColor colorWithRed:33 green:92 blue:228 alpha:1.0]];
     [title setBackgroundColor:[UIColor clearColor]];
     [leftButton addSubview:title];
     UIBarButtonItem *leftButtonItem =[[UIBarButtonItem alloc] initWithCustomView:leftButton];
+    leftButtonItem.tintColor = UIColor.yellowColor;
     
     
     //rightbaritem setup
@@ -52,13 +53,14 @@
     summaryVC.navigationItem.title = @"Summary";
     summaryVC.navigationItem.leftBarButtonItem=leftButtonItem;
     summaryVC.navigationItem.rightBarButtonItem =rightButtonItem;
-    
+   
     //tab-2 with navigation controller
     accountsViewController *accountsVC = [[accountsViewController alloc] init];
     UINavigationController *accountsNavController = [[UINavigationController alloc]initWithRootViewController:accountsVC];
     accountsVC.navigationItem.title = @"Accounts";
     accountsVC.navigationItem.leftBarButtonItem=leftButtonItem;
     accountsVC.navigationItem.rightBarButtonItem =rightButtonItem;
+    
     
     //tab-3 with navigation controller
     UIViewController *paymentsVC = [[UIViewController alloc] init];
@@ -77,6 +79,9 @@
     paymentsVC.tabBarItem.image=[UIImage imageNamed:@"payments"];
     [paymentsVC.tabBarItem setImageInsets:UIEdgeInsetsMake(3, 3, 3, 3)];
     paymentsVC.tabBarItem.title = @"Payments";
+    
+    
+    //navigation bar UI
     
     //bottom tabbars setup
     UITabBarController *tabBars = [[UITabBarController alloc] init];

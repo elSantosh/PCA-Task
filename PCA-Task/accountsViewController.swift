@@ -11,7 +11,13 @@ import UIKit
 class accountsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var resultArray = NSMutableArray()
+    var transactionAPI = String()
+    var accName = String()
+    var accNum = String()
+    var accAmount = String()
+    
     let tableView: UITableView = UITableView()
+    let prefs = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,10 +27,8 @@ class accountsViewController: UIViewController, UITableViewDelegate, UITableView
         //hide back button
         navigationItem.hidesBackButton = true
         
-        //call remote API
-        
-        self.getRequest(urlString: "http://www.mocky.io/v2/5abb0f8d3500001b4a73a7e4")
-        
+       
+       
         //tableview setup
         
         tableView.frame = self.view.bounds
@@ -33,7 +37,23 @@ class accountsViewController: UIViewController, UITableViewDelegate, UITableView
         self.view.addSubview(tableView)
         
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        
+        // receive head data with Userdefaults
+        self.accName = (prefs.value(forKey: "accName") as! String?)!
+        self.accNum = (prefs.value(forKey: "accNum") as! String?)!
+        self.accAmount = (prefs.value(forKey: "accAmount") as! String?)!
+        // receive body data
+        let dataFromSummaryDict:NSDictionary = prefs.value(forKey: "summaryArrayData") as! NSDictionary
+        self.transactionAPI =  dataFromSummaryDict.value(forKey: "transactions") as! String
+        
+        
+        //call remote API
+        self.getRequest(urlString: self.transactionAPI)
+        
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -57,6 +77,7 @@ class accountsViewController: UIViewController, UITableViewDelegate, UITableView
             return 120
         }
     }
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "accCell")
@@ -64,8 +85,14 @@ class accountsViewController: UIViewController, UITableViewDelegate, UITableView
         
         if indexPath.row==0 {
             //Header cell UI setup
+            let randomImgArray = ["sampleAccountImage01", "sampleAccountImage02", "sampleAccountImage03", "sampleAccountImage04","sampleAccountImage05"]
+//            let randowOrientation  = [".up",".upMirrored",".down",".downMirrored",".left",".leftMirrored",".right",".rightMirrored"]
+            let randomIndex = Int(arc4random_uniform(UInt32(randomImgArray.count)))
+            let imgStr:String = randomImgArray[randomIndex]
+//            let orientationStr:UIImageOrientation  = randowOrientation[randomIndex] as UIImageOrientation
             let backgroundImage = UIImageView()
-            backgroundImage.image = UIImage(named: "sampleAccountImage02")
+            let image = UIImage(named: imgStr)
+            backgroundImage.image = UIImage(cgImage: (image?.cgImage!)!, scale: (image?.scale)!, orientation: .downMirrored)
             cell.backgroundView = backgroundImage
             //overlay setup
             let ovelayFrame = CGRect(x: 0, y: 50, width: UIScreen.main.bounds.size.width, height: 100)
@@ -90,7 +117,7 @@ class accountsViewController: UIViewController, UITableViewDelegate, UITableView
             accLbl3.textColor = UIColor.white
             accLbl3.text = "$541.12"
             
-            let accLbl4Frame = CGRect(x: accLbl3.frame.size.width+15, y: 100, width: 350, height: 50)
+            let accLbl4Frame = CGRect(x: accLbl3.frame.size.width+20, y: 100, width: 100, height: 50)
             let accLbl4 = UILabel(frame: accLbl4Frame)
             accLbl4.font = UIFont.systemFont(ofSize: 14)
             accLbl4.textColor = UIColor.white
@@ -99,14 +126,26 @@ class accountsViewController: UIViewController, UITableViewDelegate, UITableView
             let arw1Frame = CGRect(x: 10, y: 90, width: 30, height: 40)
             let arwImage1 = UIImageView(frame: arw1Frame)
             arwImage1.image = UIImage(named: "TopRot_arrowLeft")
-            arwImage1.tintColor = UIColor.white
+            arwImage1.image = arwImage1.image?.imageWithColor(color: .white)
             
             let arw2Frame = CGRect(x: UIScreen.main.bounds.width-30, y: 90, width: 30, height: 40)
             let arwImage2 = UIImageView(frame: arw2Frame)
             arwImage2.image = UIImage(named: "TopRot_arrowRight")
-            arwImage2.tintColor = UIColor.white
+            arwImage2.image = arwImage2.image?.imageWithColor(color: .white)
+            
+            //add info button or accessory button
+            let infoBtnFrame = CGRect(x: UIScreen.main.bounds.width-40, y: 10, width: 30, height: 30)
+            let infoBtn = UIButton(type: .infoDark)
+            infoBtn.tintColor = UIColor.white
+            infoBtn.frame = infoBtnFrame
+            
+            //set remote data
+            accLbl1.text = self.accName
+            accLbl2.text = self.accNum
+            accLbl3.text = self.accAmount
             
             //addinng subviews to the cell
+            backgroundImage.addSubview(infoBtn)
             cell.addSubview(overlay)
             cell.addSubview(accLbl1)
             cell.addSubview(accLbl2)
@@ -148,7 +187,6 @@ class accountsViewController: UIViewController, UITableViewDelegate, UITableView
                 dict = resultArray.object(at: indexPath.row-1) as! NSDictionary
                 trnLbl1.text = self.formatDate(dateString: dict.value(forKey: "date") as! String)
                 trnLbl2.text = dict.value(forKey: "description") as? String
-                
                 //calling objective c method from summaryViewController.h
                 let summVarIni = summaryViewController()
                 trnLbl3.text = summVarIni.format(toDollars: String(format: "%@", dict.value(forKey: "amount") as! CVarArg));
@@ -227,8 +265,18 @@ class accountsViewController: UIViewController, UITableViewDelegate, UITableView
     
     
 }
-
-
+//Image tint color extension 
+@objc extension UIImage {
+    func imageWithColor(color: UIColor) -> UIImage? {
+        var image = withRenderingMode(.alwaysTemplate)
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+        color.set()
+        image.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        image = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return image
+    }
+}
 
 
 
