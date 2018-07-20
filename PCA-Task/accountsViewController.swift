@@ -45,7 +45,7 @@ class accountsViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return resultArray.count
+        return resultArray.count+1
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -145,12 +145,14 @@ class accountsViewController: UIViewController, UITableViewDelegate, UITableView
             if (resultArray.count > 0){
                 
                 var dict = NSDictionary()
-                dict = resultArray.object(at: indexPath.row) as! NSDictionary
+                dict = resultArray.object(at: indexPath.row-1) as! NSDictionary
                 trnLbl1.text = self.formatDate(dateString: dict.value(forKey: "date") as! String)
                 trnLbl2.text = dict.value(forKey: "description") as? String
-                                
                 
-                //                trnLbl3.text =
+                //calling objective c method from summaryViewController.h
+                let summVarIni = summaryViewController()
+                trnLbl3.text = summVarIni.format(toDollars: String(format: "%@", dict.value(forKey: "amount") as! CVarArg));
+
             }
             
             //add subview to the cell
@@ -200,7 +202,7 @@ class accountsViewController: UIViewController, UITableViewDelegate, UITableView
                 // we are converting it into a dictionary of type [String: Any]
                 if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
                     self.resultArray = json["transactions"] as! NSMutableArray
-                    print("ASynchronous\(self.resultArray)")
+                    
                 }
             } catch let error {
                 print(error.localizedDescription)
