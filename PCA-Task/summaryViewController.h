@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "summaryTableViewCell.h"
-#import "PCA_Task-Swift.h"
-
 
 @interface summaryViewController : UIViewController < UITableViewDelegate, UITableViewDataSource>
 

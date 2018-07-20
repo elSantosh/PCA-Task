@@ -148,8 +148,7 @@ class accountsViewController: UIViewController, UITableViewDelegate, UITableView
                 dict = resultArray.object(at: indexPath.row) as! NSDictionary
                 trnLbl1.text = self.formatDate(dateString: dict.value(forKey: "date") as! String)
                 trnLbl2.text = dict.value(forKey: "description") as? String
-                let objMtd = summaryViewController()
-                
+                                
                 
                 //                trnLbl3.text =
             }
