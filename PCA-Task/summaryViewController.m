@@ -23,7 +23,7 @@
     
     //calling API
     [self getDataFrom:@"http://www.mocky.io/v2/5abb1042350000580073a7ea"];
-
+    
     //tableView setup
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     self.tableView.delegate = self;
@@ -157,7 +157,7 @@
         accLBL3.text = [self formatToDollars:[NSString stringWithFormat:@"%@",[[resultArray objectAtIndex:indexPath.row] objectForKey:@"availableBalance"]]];
         accLBL4.text = [self formatToDollars:[NSString stringWithFormat:@"%@",[[resultArray objectAtIndex:indexPath.row] objectForKey:@"currentBalance"]]];
     }
-   
+    
     //adding subviews to the cell
     [cell addSubview:overlay];
     [cell addSubview:accLBL1];
@@ -168,12 +168,12 @@
     [cell addSubview:accLBL6];
     [cell addSubview:arwImage];
     [cell addSubview:sepView];
-   
+    
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
-   
+    
     //passing data by user defaults
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     //set head data
@@ -231,17 +231,22 @@
     {
         camount = [NSString stringWithFormat:@"%d",cents];
     }
-    NSString *dollarsString = [NSString stringWithFormat:@"$%d.%@",dollars,camount];
-    return dollarsString;
+    NSString *dollarsString = [NSString stringWithFormat:@"%d.%@",dollars,camount];
+    
+    //currency formatter
+    NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+    [nf setNumberStyle:NSNumberFormatterCurrencyStyle];
+    NSString* dolarsWithCents =  [nf stringFromNumber:[NSNumber numberWithDouble:[dollarsString doubleValue]]];
+    return dolarsWithCents;
 }
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

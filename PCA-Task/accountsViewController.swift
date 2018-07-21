@@ -27,8 +27,8 @@ class accountsViewController: UIViewController, UITableViewDelegate, UITableView
         //hide back button
         navigationItem.hidesBackButton = true
         
-       
-       
+        
+        
         //tableview setup
         
         tableView.frame = self.view.bounds
@@ -74,10 +74,10 @@ class accountsViewController: UIViewController, UITableViewDelegate, UITableView
             return 150
         }
         else{
-            return 120
+            return 100
         }
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "accCell")
@@ -86,10 +86,10 @@ class accountsViewController: UIViewController, UITableViewDelegate, UITableView
         if indexPath.row==0 {
             //Header cell UI setup
             let randomImgArray = ["sampleAccountImage01", "sampleAccountImage02", "sampleAccountImage03", "sampleAccountImage04","sampleAccountImage05"]
-//            let randowOrientation  = [".up",".upMirrored",".down",".downMirrored",".left",".leftMirrored",".right",".rightMirrored"]
+            //            let randowOrientation  = [".up",".upMirrored",".down",".downMirrored",".left",".leftMirrored",".right",".rightMirrored"]
             let randomIndex = Int(arc4random_uniform(UInt32(randomImgArray.count)))
             let imgStr:String = randomImgArray[randomIndex]
-//            let orientationStr:UIImageOrientation  = randowOrientation[randomIndex] as UIImageOrientation
+            //            let orientationStr:UIImageOrientation  = randowOrientation[randomIndex] as UIImageOrientation
             let backgroundImage = UIImageView()
             let image = UIImage(named: imgStr)
             backgroundImage.image = UIImage(cgImage: (image?.cgImage!)!, scale: (image?.scale)!, orientation: .downMirrored)
@@ -160,13 +160,13 @@ class accountsViewController: UIViewController, UITableViewDelegate, UITableView
             //rest of the cell UI setup
             
             //labels setup
-            let trnLbl1Frame = CGRect(x: 15, y: 0, width: 350, height: 50)
+            let trnLbl1Frame = CGRect(x: 15, y: -5, width: 350, height: 50)
             let trnLbl1 = UILabel(frame: trnLbl1Frame)
             trnLbl1.font = UIFont.systemFont(ofSize: 12)
             trnLbl1.textColor = UIColor.gray
-            trnLbl1.text = "26 August 2015"
+            trnLbl1.text = ""
             
-            let trnLbl2Frame = CGRect(x: 15, y: 30, width: 280, height: 100)
+            let trnLbl2Frame = CGRect(x: 17, y: 10, width: 280, height: 100)
             let trnLbl2 = UILabel(frame: trnLbl2Frame)
             trnLbl2.font = UIFont.systemFont(ofSize: 16)
             trnLbl2.textColor = UIColor.black
@@ -174,7 +174,7 @@ class accountsViewController: UIViewController, UITableViewDelegate, UITableView
             trnLbl2.lineBreakMode = NSLineBreakMode.byWordWrapping
             trnLbl2.numberOfLines = 3
             
-            let trnLbl3Frame = CGRect(x: UIScreen.main.bounds.width-80, y: 50, width: 100, height: 50)
+            let trnLbl3Frame = CGRect(x: UIScreen.main.bounds.width-80, y: 30, width: 100, height: 50)
             let trnLbl3 = UILabel(frame: trnLbl3Frame)
             trnLbl3.font = UIFont.systemFont(ofSize: 18)
             trnLbl3.textColor = UIColor.black
@@ -185,15 +185,37 @@ class accountsViewController: UIViewController, UITableViewDelegate, UITableView
                 
                 var dict = NSDictionary()
                 dict = resultArray.object(at: indexPath.row-1) as! NSDictionary
-                trnLbl1.text = self.formatDate(dateString: dict.value(forKey: "date") as! String)
+                var checkDict = NSDictionary()
+                
+                //check previous cell date
+                if (indexPath.row >= 2)
+                {
+                    
+                    checkDict = resultArray.object(at: indexPath.row-2) as! NSDictionary
+                    let previousCellDate = self.formatDate(dateString: checkDict.value(forKey: "date") as! String)
+                    let thisCellDate = self.formatDate(dateString: dict.value(forKey: "date") as! String)
+                    let isEqual = (previousCellDate == thisCellDate)
+                    if isEqual
+                    {
+                        trnLbl1.text = ""
+                    }
+                    else
+                    {
+                        trnLbl1.text = self.formatDate(dateString: dict.value(forKey: "date") as! String)
+                    }
+                }
+                else{
+                    trnLbl1.text = self.formatDate(dateString: dict.value(forKey: "date") as! String)
+                }
                 trnLbl2.text = dict.value(forKey: "description") as? String
+                
                 //calling objective c method from summaryViewController.h
                 let summVarIni = summaryViewController()
                 trnLbl3.text = summVarIni.format(toDollars: String(format: "%@", dict.value(forKey: "amount") as! CVarArg));
-
+                
             }
             
-            //add subview to the cell
+            //add subviews to the cell
             cell.addSubview(trnLbl1)
             cell.addSubview(trnLbl2)
             cell.addSubview(trnLbl3)

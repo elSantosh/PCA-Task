@@ -24,23 +24,43 @@
     UIImage* menuimage = [UIImage imageNamed:@"ic_menu_black_24dp"];
     CGRect frameimg = CGRectMake(0, 0, menuimage.size.width, menuimage.size.height);
     UIButton *leftButton = [[UIButton alloc] initWithFrame:frameimg];
-    [leftButton setBackgroundImage:menuimage forState:UIControlStateNormal];
+    
+    //image tint color
+    UIImage *newImage = [menuimage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIGraphicsBeginImageContextWithOptions(menuimage.size, NO, newImage.scale);
+    [[UIColor colorWithRed:30.00/255.00 green:90.00/255.00 blue:140.00/255.00 alpha:1.0] set];
+    [newImage drawInRect:CGRectMake(0, 0, menuimage.size.width, newImage.size.height)];
+    newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    menuimage = newImage;
+    //
+    
+    [leftButton setImage:menuimage forState:UIControlStateNormal];
+    [leftButton setTintColor:UIColor.blueColor];
     [leftButton addTarget:self action:@selector(menuAction)
          forControlEvents:UIControlEventTouchUpInside];
     [leftButton setShowsTouchWhenHighlighted:YES];
     UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(40, 2, 50, 20)];
     [title setText:@"Menu"];
-//    [title setTextColor:[UIColor colorWithRed:33 green:92 blue:228 alpha:1.0]];
-    [title setBackgroundColor:[UIColor clearColor]];
+    [title setTextColor:[UIColor colorWithRed:30.00/255.00 green:90.00/255.00 blue:140.00/255.00 alpha:1.0]];
     [leftButton addSubview:title];
     UIBarButtonItem *leftButtonItem =[[UIBarButtonItem alloc] initWithCustomView:leftButton];
-    leftButtonItem.tintColor = UIColor.yellowColor;
     
     
     //rightbaritem setup
     UIImage* lockimage = [UIImage imageNamed:@"padlock"];
     CGRect frameimg2 = CGRectMake(0, 0, lockimage.size.width, lockimage.size.height);
     UIButton *rightButton = [[UIButton alloc] initWithFrame:frameimg2];
+    
+    //image tint color
+    UIImage *newImage2 = [lockimage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIGraphicsBeginImageContextWithOptions(lockimage.size, NO, newImage2.scale);
+    [[UIColor colorWithRed:30.00/255.00 green:90.00/255.00 blue:140.00/255.00 alpha:1.0] set];
+    [newImage2 drawInRect:CGRectMake(0, 0, lockimage.size.width, newImage2.size.height)];
+    newImage2 = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    lockimage = newImage2;
+    
     [rightButton setBackgroundImage:lockimage forState:UIControlStateNormal];
     [rightButton addTarget:self action:@selector(lockAction)
           forControlEvents:UIControlEventTouchUpInside];
@@ -51,9 +71,10 @@
     summaryViewController *summaryVC = [[summaryViewController alloc] init];
     UINavigationController *summaryNavController = [[UINavigationController alloc]initWithRootViewController:summaryVC];
     summaryVC.navigationItem.title = @"Summary";
+    
     summaryVC.navigationItem.leftBarButtonItem=leftButtonItem;
     summaryVC.navigationItem.rightBarButtonItem =rightButtonItem;
-   
+    
     //tab-2 with navigation controller
     accountsViewController *accountsVC = [[accountsViewController alloc] init];
     UINavigationController *accountsNavController = [[UINavigationController alloc]initWithRootViewController:accountsVC];
@@ -161,7 +182,7 @@
                      * The device is out of space.
                      * The store could not be migrated to the current model version.
                      Check the error message to determine what the actual problem was.
-                    */
+                     */
                     NSLog(@"Unresolved error %@, %@", error, error.userInfo);
                     abort();
                 }
